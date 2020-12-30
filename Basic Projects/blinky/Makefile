@@ -2,7 +2,10 @@ PROJECT_NAME     := blinky
 OUTPUT_DIRECTORY := output
 BUILD_DIRECTORY := _build
 
-SDK_ROOT := ../../../nRF5_SDK_17.0.0_9d13099
+GNU_INSTALL_ROOT ?= $(GCC_ARM)/bin/
+GNU_PREFIX ?= arm-none-eabi
+
+SDK_ROOT := $(NRF_SDK)
 PROJ_DIR := .
 
 LINKER_SCRIPT := generic_gcc_nrf52.ld
@@ -73,9 +76,7 @@ LDFLAGS += --specs=nano.specs
 # Add standard libraries at the very end of the linker input, after all objects
 # that may need symbols provided by these libraries.
 
-GNU_INSTALL_ROOT ?= /usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/
-GNU_VERSION ?= 9.3.1
-GNU_PREFIX ?= arm-none-eabi
+
 
 CC      := $(GNU_INSTALL_ROOT)$(GNU_PREFIX)-gcc
 CXX     := $(GNU_INSTALL_ROOT)$(GNU_PREFIX)-c++
