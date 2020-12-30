@@ -1,9 +1,11 @@
 PROJECT_NAME     := blinky
-# TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := output
 BUILD_DIRECTORY := _build
 
-SDK_ROOT := ../../../nRF5_SDK_17.0.0_9d13099
+GNU_INSTALL_ROOT ?= $(GCC_ARM)/bin/
+GNU_PREFIX ?= arm-none-eabi
+
+SDK_ROOT := $(NRF_SDK)
 PROJ_DIR := .
 
 LINKER_SCRIPT  := generic_gcc_nrf52.ld
@@ -51,25 +53,6 @@ CC_SRC := main.c \
 	system_nrf52840.c
 
 AS_SRC += gcc_startup_nrf52840.S
-
-# Include folders common to all targets
-# INC_FOLDERS += \
-#   $(PROJ_DIR) \
-#   $(PROJ_DIR)/config \
-#   $(SDK_ROOT)/modules/nrfx \
-#   $(SDK_ROOT)/modules/nrfx/hal \
-#   $(SDK_ROOT)/modules/nrfx/drivers/include \
-#   $(SDK_ROOT)/modules/nrfx/mdk \
-#   $(SDK_ROOT)/integration/nrfx \
-#   $(SDK_ROOT)/components/libraries/util \
-#   $(SDK_ROOT)/components/libraries/log \
-#   $(SDK_ROOT)/components/libraries/log/src \
-#   $(SDK_ROOT)/components/libraries/delay \
-#   $(SDK_ROOT)/components/libraries/strerror \
-# 	$(SDK_ROOT)/components/libraries/experimental_section_vars \
-#   $(SDK_ROOT)/components/toolchain/cmsis/include \
-#   $(SDK_ROOT)/components/drivers_nrf/nrf_soc_nosd \
-#   $(SDK_ROOT)/external/utf_converter \
 
 INC_FOLDERS += \
 	$(PROJ_DIR) \
@@ -139,9 +122,7 @@ LDFLAGS += --specs=nano.specs
 # Add standard libraries at the very end of the linker input, after all objects
 # that may need symbols provided by these libraries.
 
-GNU_INSTALL_ROOT ?= /usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/
-GNU_VERSION ?= 9.3.1
-GNU_PREFIX ?= arm-none-eabi
+
 
 CC      := $(GNU_INSTALL_ROOT)$(GNU_PREFIX)-gcc
 CXX     := $(GNU_INSTALL_ROOT)$(GNU_PREFIX)-c++

@@ -3,7 +3,11 @@ PROJECT_NAME     := usb_shell
 OUTPUT_DIRECTORY := output
 BUILD_DIRECTORY := _build
 
-SDK_ROOT := ../../../../nRF5_SDK_17.0.0_9d13099
+GNU_INSTALL_ROOT ?= $(GCC_ARM)/bin/
+GNU_PREFIX ?= arm-none-eabi
+
+SDK_ROOT := $(NRF_SDK)
+
 TASK_DIR := ../../tasks
 PRINTF := ../../../../printf
 PROJ_DIR := .
@@ -126,9 +130,6 @@ LDFLAGS += -Wl,--gc-sections
 # use newlib in nano version
 LDFLAGS += --specs=nano.specs
 
-GNU_INSTALL_ROOT ?= /usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/
-GNU_VERSION ?= 9.3.1
-GNU_PREFIX ?= arm-none-eabi
 
 CC      := $(GNU_INSTALL_ROOT)$(GNU_PREFIX)-gcc
 CXX     := $(GNU_INSTALL_ROOT)$(GNU_PREFIX)-c++
