@@ -8,7 +8,7 @@ REPO_ROOT := ../../..
 
 SDK_ROOT := $(NRF_SDK)
 
-TASK_DIR := $(REPO_ROOT)/rtos_projects/tasks
+TASK_DIR := $(REPO_ROOT)/RTOS\ Projects/tasks
 PRINTF := .$(REPO_ROOT)/printf
 PROJ_DIR := .
 
