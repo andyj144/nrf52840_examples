@@ -4,11 +4,11 @@ BUILD_DIRECTORY := _build
 
 GNU_INSTALL_ROOT ?= $(GCC_ARM)/bin/
 GNU_PREFIX ?= arm-none-eabi
-REPO_ROOT := ../../..
+REPO_ROOT := ../../
 
 SDK_ROOT := $(NRF_SDK)
 
-TASK_DIR := $(REPO_ROOT)/rtos_projects/tasks
+TASK_DIR := $(REPO_ROOT)/tasks
 PRINTF := $(REPO_ROOT)/printf
 PROJ_DIR := .
 
