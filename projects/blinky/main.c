@@ -1,6 +1,5 @@
 #include "nrf_delay.h"
 #include "nrf_gpio.h"
-#include "sparkfun_nrf52840_mini.h"
 
 #define LED NRF_GPIO_PIN_MAP(0,7)
 
