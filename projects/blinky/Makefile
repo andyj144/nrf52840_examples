@@ -5,27 +5,25 @@ BUILD_DIRECTORY := _build
 GNU_INSTALL_ROOT ?= $(GCC_ARM)/bin/
 GNU_PREFIX ?= arm-none-eabi
 
-SDK_ROOT := $(NRF_SDK)
+SDK_ROOT ?= $(NRF_SDK)
 PROJ_DIR := .
 
 LINKER_SCRIPT := generic_gcc_nrf52.ld
 
-SRC_DIRS := $(PROJ_DIR)
+SOURCE_DIRECTORIES := $(PROJ_DIR)
 
-# Include folders common to all targets
-INC_FOLDERS += \
+INCLUDE_DIRECTORIES += \
   $(PROJ_DIR) \
+  $(SDK_ROOT)/modules/nrfx/hal \
+  $(SDK_ROOT)/components/libraries/delay \
   $(PROJ_DIR)/config \
   $(SDK_ROOT)/modules/nrfx \
-  $(SDK_ROOT)/modules/nrfx/hal \
   $(SDK_ROOT)/modules/nrfx/mdk \
   $(SDK_ROOT)/integration/nrfx \
   $(SDK_ROOT)/components/libraries/util \
-  $(SDK_ROOT)/components/libraries/delay \
   $(SDK_ROOT)/components/toolchain/cmsis/include \
   $(SDK_ROOT)/components/drivers_nrf/nrf_soc_nosd \
 
-# Libraries common to all targets
 LIB_FILES += \
 
 # Optimization flags
@@ -95,13 +93,13 @@ ASMFLAGS += -D__STACK_SIZE=8192
 
 LIB_FILES += -lc -lnosys -lm
 
-CC_SRC := $(notdir $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c)))
+CC_SRC := $(notdir $(foreach dir,$(SOURCE_DIRECTORIES),$(wildcard $(dir)/*.c)))
 
 ##Add these and other chip specific files  and folders last
 CC_SRC += system_nrf52840.c
 AS_SRC += gcc_startup_nrf52840.S
 
-SRC_DIRS += $(SDK_ROOT)/modules/nrfx/mdk/
+SOURCE_DIRECTORIES += $(SDK_ROOT)/modules/nrfx/mdk/
 
 OBJS = $(CC_SRC:.c=.o)
 OBJS += $(AS_SRC:.S=.o)
@@ -109,7 +107,7 @@ OBJS += $(AS_SRC:.S=.o)
 OBJS = $(CC_SRC:.c=.o)
 OBJS += $(AS_SRC:.S=.o)
 
-VPATH = $(SRC_DIRS)
+VPATH = $(SOURCE_DIRECTORIES)
 default: $(OUTPUT_DIRECTORY) $(BUILD_DIRECTORY) $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex
 
 $(OUTPUT_DIRECTORY):
@@ -127,11 +125,11 @@ $(OUTPUT_DIRECTORY)/%.out:$(addprefix $(BUILD_DIRECTORY)/, $(OBJS))
 
 $(BUILD_DIRECTORY)/%.o:%.c
 	@echo building $<
-	@$(CC) -std=c99 -MP -MD -c -o $@ $^ $(CFLAGS) $(addprefix -I, $(INC_FOLDERS))
+	@$(CC) -std=c99 -MP -MD -c -o $@ $^ $(CFLAGS) $(addprefix -I, $(INCLUDE_DIRECTORIES))
 
 $(BUILD_DIRECTORY)/%.o:%.S
 	@echo building $<
-	@$(CC) -x assembler-with-cpp -MP -MD -c -o $@ $^ $(ASMFLAGS) $(addprefix -I, $(INC_FOLDERS))
+	@$(CC) -x assembler-with-cpp -MP -MD -c -o $@ $^ $(ASMFLAGS) $(addprefix -I, $(INCLUDE_DIRECTORIES))
 
 SDK_CONFIG_FILE := ./config/sdk_config.h
 CMSIS_CONFIG_TOOL := $(SDK_ROOT)/external_tools/cmsisconfig/CMSIS_Configuration_Wizard.jar
